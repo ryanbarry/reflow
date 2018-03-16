@@ -10,14 +10,13 @@
 #define T_CS  8
 #define T_IRQ 4
 
+#include "temp.h"
 #include "learn.h"
 #include "bake.h"
 #include "reflow.h"
 #include "display.h"
 
 MAX31855 tc(M_CLK, M_CS, M_DO);
-volatile int32_t temp, tcint;
-volatile uint8_t tcerr;
 
 IntervalTimer tcTimer;
 
