@@ -3,11 +3,7 @@
 
 #include <Arduino.h>
 #include "MAX31855.h"
-
-//MAX38155 thermocouple interface
-#define M_CLK 13 //SCK0
-#define M_CS 6
-#define M_DO 12  //MISO0
+#include "pins.h"
 
 extern volatile int32_t temp, tcint;
 extern volatile uint8_t tcerr;

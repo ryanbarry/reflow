@@ -1,9 +1,5 @@
 #include <Arduino.h>
 
-//Touch controller
-#define T_CS  8
-#define T_IRQ 4
-
 #include "temp.h"
 #include "learn.h"
 #include "bake.h"
