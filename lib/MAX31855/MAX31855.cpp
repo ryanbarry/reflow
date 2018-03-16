@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <SPI.h>
+#include <limits.h>
 #include "MAX31855.h"
 
 MAX31855::MAX31855(int8_t _ck, int8_t _cs, int8_t _miso) {
@@ -39,7 +40,6 @@ int32_t MAX31855::read16thDegInternal(void) {
     int16_t tmp = 0xF800 | (v & 0x7FF);
     internal = tmp;
   }
-  //internal *= 0.0625; // LSB = 0.0625 degrees
 
   return internal;
 }
@@ -50,7 +50,7 @@ int32_t MAX31855::readQtrDegCelsius(void) {
 
   if (v & MAX31855_ERR_BIT) {
     // uh oh, a serious problem!
-    return NAN; 
+    return -INT_MAX;
   }
 
   if (v & 0x80000000) {
