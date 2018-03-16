@@ -10,6 +10,9 @@
 #define T_CS  8
 #define T_IRQ 4
 
+#include "learn.h"
+#include "bake.h"
+#include "reflow.h"
 #include "display.h"
 
 MAX31855 tc(M_CLK, M_CS, M_DO);
@@ -40,8 +43,20 @@ elapsedMillis m;
 uint32_t numS = 0;
 
 void loop() {
+  bool touchedLearn = false,
+    touchedBake = false,
+    touchedReflow = false;//,
+    //onSecondInterval = false;
+
   if (m/1000 > numS) {
     numS++;
+    //onSecondInterval = true;
     displayTemp();
+  } else {
+    //onSecondInterval = false;
   }
+
+  if(touchedLearn) learn();
+  else if(touchedBake) bake();
+  else if(touchedReflow) reflow();
 }
