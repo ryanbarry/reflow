@@ -13,20 +13,19 @@ void clearDisplay(void) {
   tft.fillScreen(ILI9341_WHITE);
 }
 
-void drawHeader(const char *title) {
+void drawHeader(const char *title, int32_t temp, uint8_t tcerr) {
   tft.fillRect(0, 0, 320, 28, ILI9341_WHITE);
   tft.fillRect(8, 24, 304, 4, ILI9341_BLUE);
   tft.setCursor(10, 13);
   tft.setFont(&HEADER_FONT);
   tft.setTextColor(ILI9341_BLACK);
   tft.print(title);
-  displayTemp();
+  displayTemp(temp, tcerr);
 }
 
-void displayTemp(void)  {
+void displayTemp(int32_t temp, uint8_t tcerr)  {
   tft.setCursor(240, 18);
   tft.setFont(&HEADER_FONT);
-  tcerr = MAX31855_NO_ERR;
   if (tcerr != MAX31855_NO_ERR) {
     tft.fillRect(240, 0, 80, 20, ILI9341_BLACK);
     tft.setTextColor(ILI9341_CYAN);
@@ -41,7 +40,7 @@ void displayTemp(void)  {
       tft.print("ShGND");
       break;
     }
-  } else if (temp >= 50.0) {
+  } else if (temp >= 200) {
     tft.fillRect(240, 0, 80, 20, ILI9341_WHITE);
     tft.setTextColor(ILI9341_RED);
     tft.print(temp >> 2);

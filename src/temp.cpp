@@ -1,6 +1,18 @@
 #include "temp.h"
 
-volatile int32_t temp = 0, tcint = 0;
-volatile uint8_t tcerr = 0;
+#include "pins.h"
 
-MAX31855 tc(M_CLK, M_CS, M_DO);
+Thermocouple::Thermocouple(void) {
+  tc = new MAX31855(M_CLK, M_CS, M_DO);
+  tc->begin();
+
+  temp = 0;
+  internalTemp = 0;
+  err = 0;
+}
+
+void Thermocouple::readAll(void) {
+  internalTemp = tc->read16thDegInternal();
+  temp = tc->readQtrDegCelsius();
+  err = tc->readError();
+}

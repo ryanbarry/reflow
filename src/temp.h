@@ -3,11 +3,18 @@
 
 #include <Arduino.h>
 #include "MAX31855.h"
-#include "pins.h"
 
-extern volatile int32_t temp, tcint;
-extern volatile uint8_t tcerr;
+class Thermocouple {
+public:
+  volatile int32_t temp, internalTemp;
+  volatile uint8_t err;
 
-extern MAX31855 tc;
+  Thermocouple(void);
+
+  void readAll(void);
+
+private:
+  MAX31855 *tc;
+};
 
 #endif
