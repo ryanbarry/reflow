@@ -10,7 +10,7 @@
 
 void setupDisplay(void);
 void clearDisplay(void);
-void displayTemp(int32_t temp, uint8_t tcerr);
-void drawHeader(const char *title, int32_t temp, uint8_t tcerr);
 
+void displayTemp(int32_t, uint8_t);
+void drawHeader(const char*, int32_t, uint8_t);
 #endif
