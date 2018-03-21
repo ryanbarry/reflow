@@ -5,6 +5,12 @@
 #include "bake.h"
 #include "reflow.h"
 #include "display.h"
+#include "pins.h"
+
+#include "XPT2046_Calibrated.h"
+XPT2046_Calibrated ts(T_CS, T_IRQ);
+
+//#define ENABLE_TOUCH_CALIBRATION
 
 #define THERMOCOUPLE_READ_INTERVAL_MILLIS 200
 
@@ -21,6 +27,15 @@ void setup() {
 
   //while (!Serial.dtr());
   clearDisplay();
+
+  ts.begin();
+  ts.setRotation(3);
+#ifdef ENABLE_TOUCH_CALIBRATION
+  ts.runCalibration(tft);
+#endif
+
+  ts.calibrate(-0.0882, -0.000174, 329, 0.000238, -0.0668, 257, 320, 240);
+
   drawHeader("Reflow", -1, MAX31855_NO_ERR);
 }
 
@@ -31,6 +46,7 @@ void loop() {
   bool touchedLearn = false,
     touchedBake = false,
     touchedReflow = false,
+    touchedSetup = false,
     onSecondInterval = false;
 
   if (m/1000 > numS) {
@@ -50,5 +66,8 @@ void loop() {
   } else if(touchedReflow) {
     tcTimer.begin(tcRead, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
     reflow();
+  } else if(touchedSetup) {
+    tcTimer.end();
+    setup();
   }
 }

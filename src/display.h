@@ -8,9 +8,12 @@
 
 #include "pins.h"
 
+extern Adafruit_ILI9341 tft;
+
 void setupDisplay(void);
 void clearDisplay(void);
 
 void displayTemp(int32_t, uint8_t);
 void drawHeader(const char*, int32_t, uint8_t);
+
 #endif
