@@ -1,7 +1,7 @@
-#include <stdint.h>
 #include "learn.h"
+#include <stdint.h>
+#include <Arduino.h>
 #include "pins.h"
-#include "temp.h"
 #include "MAX31855.h"
 
 #define LEARNING_INERTIA_TEMP 150 * 4  // Target temperature to run inertia tests against (in 1/4th degrees Celsius)
@@ -32,7 +32,7 @@ typedef enum {
 } MeasurementMode;
 
 void learn(Thermocouple &tc) {
-  // set up display for this operation
+  //TODO: set up display for this operation
   elapsedMillis lastLoopTime = 0;
   LearningPhase phase = INITIAL_RAMP;
   MeasurementMode mode = WHOLE_OVEN;
@@ -59,10 +59,10 @@ void learn(Thermocouple &tc) {
     elementDutyCounter[i] = (65 * i) % 100; // TODO: does this make sense?
   }
 
-  // set up buttons for this operation
+  //TODO: set up buttons for this operation
 
   while(1) {
-    // check if user hit a (the?) button
+    //TODO: check if user hit a (the?) button
 
     if(lastLoopTime < 20) {
       delay(1);

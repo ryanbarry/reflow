@@ -18,6 +18,7 @@ class MAX31855 {
   void begin(void);
   int32_t read16thDegInternal(void);
   int32_t readQtrDegCelsius(void);
+  int16_t justReadTc(void);
   uint8_t readError(void);
 
  private:

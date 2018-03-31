@@ -3,7 +3,7 @@
 #include "pins.h"
 
 Thermocouple::Thermocouple(void) {
-  tc = new MAX31855(M_CLK, M_CS, M_DO);
+  tc = new MAX31855(PIN_M_CLK, PIN_M_CS, PIN_M_DO);
   tc->begin();
 
   temp = 0;
@@ -12,7 +12,7 @@ Thermocouple::Thermocouple(void) {
 }
 
 void Thermocouple::readAll(void) {
-  internalTemp = tc->read16thDegInternal();
+  //internalTemp = tc->read16thDegInternal();
   temp = tc->readQtrDegCelsius();
   err = tc->readError();
 }

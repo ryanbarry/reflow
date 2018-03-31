@@ -65,6 +65,26 @@ int32_t MAX31855::readQtrDegCelsius(void) {
   return v;
 }
 
+int16_t MAX31855::justReadTc(void) {
+  if (!initialized) return MAX31855_ERR_BIT;
+  SPI.beginTransaction(spiSettings);
+
+  int16_t d;
+
+  digitalWrite(cs, LOW);
+  // tCSS (CS fall to SCK rise) is specified as at least 100ns in the MAX31855 datasheet
+  delayMicroseconds(1);
+
+  d = SPI.transfer(0);
+  d <<= 8;
+  d |= SPI.transfer(0);
+  digitalWrite(cs, HIGH);
+
+  SPI.endTransaction();
+
+  return d >> 2;
+}
+
 uint8_t MAX31855::readError() {
   return lastErr;
 }
