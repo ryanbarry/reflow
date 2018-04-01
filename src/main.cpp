@@ -21,38 +21,8 @@ void nopCb(void) {
   Serial.println("NOP!");
 }
 
-void botHeaterToggle(void) {
-  static bool on = false;
-  if (on) {
-    Serial.println("bottom heater off");
-    OUTPUT_OFF(PIN_HEATER_BOTTOM);
-  } else {
-    Serial.println("bottom heater on");
-    OUTPUT_ON(PIN_HEATER_BOTTOM);
-  }
-  on = !on;
-}
-void topHeaterToggle(void) {
-  static bool on = false;
-  if (on) {
-    Serial.println("top heater off");
-    OUTPUT_OFF(PIN_HEATER_TOP);
-  } else {
-    Serial.println("top heater on");
-    OUTPUT_ON(PIN_HEATER_TOP);
-  }
-  on = !on;
-}
-void bstHeaterToggle(void) {
-  static bool on = false;
-  if (on) {
-    Serial.println("boost heater off");
-    OUTPUT_OFF(PIN_HEATER_BOOST);
-  } else {
-    Serial.println("boost heater on");
-    OUTPUT_ON(PIN_HEATER_BOOST);
-  }
-  on = !on;
+void learnCb(void) {
+  learn(tc);
 }
 
 typedef struct {
@@ -62,9 +32,7 @@ typedef struct {
 } btn;
 Adafruit_GFX_Button b1, b2, b3, b4;
 btn buttons[] = {
-  {&b1, "Top", topHeaterToggle},
-  {&b2, "Bottom", botHeaterToggle},
-  {&b3, "Boost", bstHeaterToggle},
+  {&b1, "Learn", learnCb},
   {&b4, "Setup", doSetup}
 };
 const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
