@@ -2,24 +2,24 @@
 #define _TEMP_H
 
 #include <Arduino.h>
+#include <stdint.h>
 #include "MAX31855.h"
 
-void tcReadIsr(void);
+#define ERR_THRESHOLD 5
+#define AVG_READINGS 15
 
 class Thermocouple {
 public:
-  volatile int32_t temp, internalTemp;
+  volatile uint32_t tcReadingCounter;
+  volatile int32_t avgtmp;
   volatile uint8_t err;
 
   Thermocouple(void);
 
-  void readAll(void);
+  void tcReadIsr(void);
 
 private:
   MAX31855 *max;
 };
-
-extern Thermocouple tc;
-extern volatile uint32_t tcReadingCounter;
 
 #endif

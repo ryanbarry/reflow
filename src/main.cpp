@@ -8,6 +8,8 @@
 #include "display.h"
 #include "pins.h"
 
+Thermocouple tc;
+
 #include <XPT2046_Touchscreen.h>
 XPT2046_Touchscreen ts(PIN_T_CS);
 
@@ -69,6 +71,10 @@ const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
 
 elapsedMillis m;
 
+void tcIsr(void) {
+  tc.tcReadIsr();
+}
+
 void setup() {
   Serial.begin(0);
 
@@ -99,7 +105,7 @@ void setup() {
   Serial.println("moving on");
 #endif
 
-  tcTimer.begin(tcReadIsr, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
+  tcTimer.begin(tcIsr, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
   SPI.usingInterrupt(tcTimer);
   m = 0;
 }
@@ -113,10 +119,10 @@ void loop() {
   if (m/1000 > numS) {
     numS++;
     onSecondInterval = true;
-    displayTemp(tc.temp, tc.err);
+    displayTemp(tc.avgtmp, tc.err);
 #if defined(DEBUG_ALL) || defined(DEBUG_TC)
     Serial.print("tc readings: ");
-    Serial.println(tcReadingCounter);
+    Serial.println(tc.tcReadingCounter);
 #endif
   } else {
     onSecondInterval = false;
