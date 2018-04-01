@@ -17,6 +17,9 @@
 #define PIN_T_CS  8
 #define PIN_T_IRQ 4
 
+//piezo
+#define PIN_BUZZER 22
+
 //outputs
 #define NUM_OUTPUTS 5
 #define NUM_HEATERS 3
