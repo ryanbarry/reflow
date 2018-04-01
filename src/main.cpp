@@ -30,32 +30,32 @@ void botHeaterToggle(void) {
   static bool on = false;
   if (on) {
     Serial.println("bottom heater off");
-    digitalWrite(0, HIGH);
+    OUTPUT_OFF(PIN_HEATER_BOTTOM);
   } else {
     Serial.println("bottom heater on");
-    digitalWrite(0, LOW);
+    OUTPUT_ON(PIN_HEATER_BOTTOM);
   }
   on = !on;
 }
 void topHeaterToggle(void) {
   static bool on = false;
   if (on) {
-    Serial.println("bottom heater off");
-    digitalWrite(1, HIGH);
+    Serial.println("top heater off");
+    OUTPUT_OFF(PIN_HEATER_TOP);
   } else {
-    Serial.println("bottom heater on");
-    digitalWrite(1, LOW);
+    Serial.println("top heater on");
+    OUTPUT_ON(PIN_HEATER_TOP);
   }
   on = !on;
 }
 void bstHeaterToggle(void) {
   static bool on = false;
   if (on) {
-    Serial.println("bottom heater off");
-    digitalWrite(2, HIGH);
+    Serial.println("boost heater off");
+    OUTPUT_OFF(PIN_HEATER_BOOST);
   } else {
-    Serial.println("bottom heater on");
-    digitalWrite(2, LOW);
+    Serial.println("boost heater on");
+    OUTPUT_ON(PIN_HEATER_BOOST);
   }
   on = !on;
 }
@@ -77,20 +77,18 @@ const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
 elapsedMillis m;
 
 void setup() {
-  //setupPins();
-  pinMode(0, OUTPUT);
-  pinMode(1, OUTPUT);
-  pinMode(2, OUTPUT);
   Serial.begin(0);
-  setupDisplay();
 
+  setupDisplay();
   clearDisplay();
+  //drawHeader("Waiting for serial...", -1, MAX31855_NO_ERR);
+  while (!Serial.dtr());
+
+  setupPins();
 
   ts.begin();
   ts.setRotation(1);
 
-  //drawHeader("Waiting for serial...", -1, MAX31855_NO_ERR);
-  //while (!Serial.dtr());
 
 #ifdef ENABLE_TOUCH_CALIBRATION
   tft.setFont();

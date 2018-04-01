@@ -20,15 +20,17 @@
 //outputs
 #define NUM_OUTPUTS 5
 #define NUM_HEATERS 3
-#define OUTPIN_HEATER_TOP 0
-#define OUTPIN_HEATER_BOTTOM 1
-#define OUTPIN_HEATER_BOOST 2
-#define OUTPIN_FAN_COOLING 3
-#define OUTPIN_SERVO_DOOR 4
+#define PIN_HEATER_TOP 1
+#define PIN_HEATER_BOTTOM 0
+#define PIN_HEATER_BOOST 2
+#define PIN_FAN_COOLING 16
+#define PIN_SERVO_DOOR 17
 extern uint8_t output_pins[];
 
-#define OUTPUT_ON(p) digitalWrite(output_pins[p], 1)
-#define OUTPUT_OFF(p) digitalWrite(output_pins[p], 0)
-#define ALL_HEATERS_OFF OUTPUT_OFF(OUTPIN_HEATER_TOP); OUTPUT_OFF(OUTPIN_HEATER_BOTTOM); OUTPUT_OFF(OUTPIN_HEATER_BOOST);
+#define OUTPUT_ON(p) digitalWrite(p, 1)
+#define OUTPUT_OFF(p) digitalWrite(p, 0)
+#define ALL_HEATERS_OFF OUTPUT_OFF(PIN_HEATER_TOP); OUTPUT_OFF(PIN_HEATER_BOTTOM); OUTPUT_OFF(PIN_HEATER_BOOST);
+
+void setupPins(void);
 
 #endif

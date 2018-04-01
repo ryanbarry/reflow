@@ -51,7 +51,7 @@ void learn(Thermocouple &tc) {
 
   // init all outputs off
   ALL_HEATERS_OFF;
-  OUTPUT_OFF(OUTPIN_FAN_COOLING);
+  OUTPUT_OFF(PIN_FAN_COOLING);
 
   //if (abort) button touched, exit
 
