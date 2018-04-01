@@ -21,19 +21,33 @@ void drawReflowScreen(void) {
   tft.setFont(&HEADER_FONT);
   tft.setTextColor(ILI9341_BLACK);
   tft.print("Waiting for temp 50C");
-  const int graphBottom = 205, graphTop = 31, tickSeparation = 15;
-  tft.drawFastVLine(30, graphTop, 174, ILI9341_BLACK); // left side Y-axis
-  tft.drawFastVLine(311, graphTop, 174, ILI9341_BLACK); // right side Y-axis
-  tft.drawFastHLine(25, graphTop, 287, ILI9341_BLACK); // top X-axis
-  tft.drawFastHLine(25, graphBottom, 287, ILI9341_BLACK); // bottom X-axis
+  const int graphBottom=205, graphTop=31,
+    xTickSeparation=10, yTickSeparation=15,
+    graphWidth=280, graphHeight=175,
+    graphLeft=30, graphRight=graphLeft+graphWidth;
+  //TODO: do i need the "-1" after graphHeight/Width? (and "+1" on x-coord of right side Y-axis?)
+  tft.drawFastVLine(30, graphTop, graphHeight-1, ILI9341_BLACK); // left side Y-axis
+  tft.drawFastVLine(graphRight+1, graphTop, graphHeight-1, ILI9341_BLACK); // right side Y-axis
+  tft.drawFastHLine(30, graphTop, graphWidth-1, ILI9341_BLACK); // top X-axis
+  tft.drawFastHLine(30, graphBottom, graphWidth-1, ILI9341_BLACK); // bottom X-axis
   tft.setFont();
   tft.setTextSize(1);
-  for(int i=0; i < 12; i++) {
-    tft.drawFastHLine(25, graphBottom-(i*tickSeparation), 7, ILI9341_BLACK); // y-axis tick marks
-    //tft.setCursor(2, i);
-    //tft.print(285-((graphBottom-i)/15)*35
+  for(int i=0; i < (graphHeight/yTickSeparation); i++) {
+    tft.drawFastHLine(25, graphBottom-(i*yTickSeparation), 7, ILI9341_BLACK); // y-axis tick marks
+    // draw labels next to every other tick mark
+    if (i%2 == 0) {
+      tft.setCursor(2, i);
+      tft.print(75+i*35);
+    }
   }
-  
+
+  for(int i=1; i < (graphWidth/xTickSeparation - 1); i++) {
+    tft.drawFastVLine(graphLeft+i*xTickSeparation, graphBottom, 3, ILI9341_BLACK);
+    if(i%3 == 0) {
+      tft.setCursor(graphLeft+(i-1)*xTickSeparation, graphBottom+3);
+      tft.print(i*10); // draw labels every 3rd tick
+    }
+  }
 }
 
 void reflow(void) {
