@@ -92,7 +92,9 @@ void setup() {
   drawHeader("Reflow", -1, MAX31855_NO_ERR);
 
   tft.setFont();
+#if defined(DEBUG_ALL) || defined(DEBUG_TFT)
   Serial.print("init'ing & drawing "); Serial.print(numButtons); Serial.println(" buttons");
+#endif
   for(int i=0; i < numButtons; i++) {
     buttons[i].button->initButtonUL(&tft, 115, BUTTON_HEIGHT+BUTTON_VERT_SPACING*i,
                                     BUTTON_WIDTH, BUTTON_HEIGHT,
@@ -100,7 +102,9 @@ void setup() {
                                     (char*)buttons[i].name, 2);
     buttons[i].button->drawButton();
   }
+#if defined(DEBUG_ALL) || defined(DEBUG_TFT)
   Serial.println("moving on");
+#endif
 
   tcTimer.begin(tcRead, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
   SPI.usingInterrupt(tcTimer);
@@ -117,8 +121,10 @@ void loop() {
     numS++;
     onSecondInterval = true;
     displayTemp(tc.temp, tc.err);
-    //Serial.print("tc readings: ");
-    //Serial.println(tcReadingCounter);
+#if defined(DEBUG_ALL) || defined(DEBUG_TC)
+    Serial.print("tc readings: ");
+    Serial.println(tcReadingCounter);
+#endif
   } else {
     onSecondInterval = false;
   }
@@ -133,7 +139,9 @@ void loop() {
       touchX = map(rawX, 380, 3870, 0, 319);
       touchY = map(rawY, 270, 3800, 0, 239);
 
+#if defined(DEBUG_ALL) || defined(DEBUG_TOUCH)
       Serial.printf("touched! (%d, %d, %d, %d, %d)\n", touchX, touchY, touchZ, rawX, rawY);
+#endif
 
       for (int i=0; i < numButtons; i++) {
         if (buttons[i].button->contains(touchX, touchY)) {
@@ -152,7 +160,9 @@ void loop() {
     for(int i=0; i < numButtons; i++) {
       if(buttons[i].button->justPressed()) {
         buttons[i].button->drawButton(true);
+#if defined(DEBUG_ALL) || defined(DEBUG_TOUCH)
         Serial.print("hit "); Serial.print(buttons[i].name); Serial.println("!");
+#endif
         buttons[i].action();
       } else if(buttons[i].button->justReleased()) {
         buttons[i].button->drawButton(false);
