@@ -89,13 +89,6 @@ void setup() {
   ts.begin();
   ts.setRotation(1);
 
-
-#ifdef ENABLE_TOUCH_CALIBRATION
-  tft.setFont();
-  tft.setTextSize(1);
-  ts.runCalibration(tft);
-#endif
-
   drawHeader("Reflow", -1, MAX31855_NO_ERR);
 
   tft.setFont();
@@ -136,7 +129,6 @@ void loop() {
       uint16_t rawX, rawY;
       int32_t touchX, touchY;
       uint8_t touchZ;
-      //ts.calibRead(&touchX, &touchY, &touchZ, &rawX, &rawY);
       ts.readData(&rawX, &rawY, &touchZ);
       touchX = map(rawX, 380, 3870, 0, 319);
       touchY = map(rawY, 270, 3800, 0, 239);
