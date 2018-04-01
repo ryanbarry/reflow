@@ -36,10 +36,10 @@ void displayTemp(int32_t temp, uint8_t tcerr)  {
       tft.print("N/C");
       break;
     case MAX31855_ERR_SCV:
-      tft.print("ShVcc");
+      tft.print("shHi");
       break;
     case MAX31855_ERR_SCG:
-      tft.print("ShGND");
+      tft.print("shLo");
       break;
     }
   } else if (temp >= 200) {
@@ -50,19 +50,19 @@ void displayTemp(int32_t temp, uint8_t tcerr)  {
     tft.fillRect(240, 0, 80, 20, ILI9341_WHITE);
     tft.setTextColor(ILI9341_BLACK);
     tft.print(temp >> 2);
-    switch (temp & 0x3) {
-    case 0:
-      tft.print(".00");
-      break;
-    case 1:
-      tft.print(".25");
-      break;
-    case 2:
-      tft.print(".50");
-      break;
-    case 3:
-      tft.print(".75");
-      break;
-    }
+  }
+  switch (temp & 0x3) {
+  case 0:
+    tft.print(".00");
+    break;
+  case 1:
+    tft.print(".25");
+    break;
+  case 2:
+    tft.print(".50");
+    break;
+  case 3:
+    tft.print(".75");
+    break;
   }
 }
