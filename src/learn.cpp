@@ -302,7 +302,7 @@ void learn(Thermocouple &tc) {
       if (currentTemp > peakTemp) {
         peakTemp = currentTemp;
         // Has the temperature passed 150C yet?
-        if (secondsTo150C == 0 && currentTemp >= 150.0) {
+        if (secondsTo150C == 0 && currentTemp >= (150*4)) {
           secondsTo150C = secondsIntoPhase;
           // Return to the soak temperature
           desiredTemp = LEARNING_SOAK_TEMP;
