@@ -26,6 +26,40 @@ void nopCb(void) {
   Serial.println("NOP!");
 }
 
+void botHeaterToggle(void) {
+  static bool on = false;
+  if (on) {
+    Serial.println("bottom heater off");
+    digitalWrite(0, HIGH);
+  } else {
+    Serial.println("bottom heater on");
+    digitalWrite(0, LOW);
+  }
+  on = !on;
+}
+void topHeaterToggle(void) {
+  static bool on = false;
+  if (on) {
+    Serial.println("bottom heater off");
+    digitalWrite(1, HIGH);
+  } else {
+    Serial.println("bottom heater on");
+    digitalWrite(1, LOW);
+  }
+  on = !on;
+}
+void bstHeaterToggle(void) {
+  static bool on = false;
+  if (on) {
+    Serial.println("bottom heater off");
+    digitalWrite(2, HIGH);
+  } else {
+    Serial.println("bottom heater on");
+    digitalWrite(2, LOW);
+  }
+  on = !on;
+}
+
 typedef struct {
   Adafruit_GFX_Button *button;
   const char *name;
@@ -33,9 +67,9 @@ typedef struct {
 } btn;
 Adafruit_GFX_Button learnButton, bakeButton, reflowButton, setupButton;
 btn buttons[] = {
-  {&learnButton, "Learn", nopCb},
-  {&bakeButton, "Bake", bake},
-  {&reflowButton, "Reflow", reflow},
+  {&learnButton, "Top", topHeaterToggle},
+  {&bakeButton, "Bottom", botHeaterToggle},
+  {&reflowButton, "Boost", bstHeaterToggle},
   {&setupButton, "Setup", doSetup}
 };
 const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
@@ -43,6 +77,10 @@ const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
 elapsedMillis m;
 
 void setup() {
+  //setupPins();
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
   Serial.begin(0);
   setupDisplay();
 
@@ -52,7 +90,7 @@ void setup() {
   ts.setRotation(1);
 
   //drawHeader("Waiting for serial...", -1, MAX31855_NO_ERR);
-  while (!Serial.dtr());
+  //while (!Serial.dtr());
 
 #ifdef ENABLE_TOUCH_CALIBRATION
   tft.setFont();
