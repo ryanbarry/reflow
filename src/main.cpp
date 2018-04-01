@@ -14,13 +14,6 @@ XPT2046_Touchscreen ts(PIN_T_CS);
 #define THERMOCOUPLE_READ_INTERVAL_MILLIS 200
 
 IntervalTimer tcTimer;
-Thermocouple tc;
-volatile uint32_t tcReadingCounter = 0;
-
-void tcRead(void) {
-  tc.readAll();
-  tcReadingCounter++;
-}
 
 void nopCb(void) {
   Serial.println("NOP!");
@@ -106,7 +99,7 @@ void setup() {
   Serial.println("moving on");
 #endif
 
-  tcTimer.begin(tcRead, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
+  tcTimer.begin(tcReadIsr, THERMOCOUPLE_READ_INTERVAL_MILLIS * 1000);
   SPI.usingInterrupt(tcTimer);
   m = 0;
 }

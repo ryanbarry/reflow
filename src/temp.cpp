@@ -1,10 +1,12 @@
 #include "temp.h"
-
 #include "pins.h"
 
+Thermocouple tc;
+volatile uint32_t tcReadingCounter = 0;
+
 Thermocouple::Thermocouple(void) {
-  tc = new MAX31855(PIN_M_CLK, PIN_M_CS, PIN_M_DO);
-  tc->begin();
+  max = new MAX31855(PIN_M_CLK, PIN_M_CS, PIN_M_DO);
+  max->begin();
 
   temp = 0;
   internalTemp = 0;
@@ -13,6 +15,12 @@ Thermocouple::Thermocouple(void) {
 
 void Thermocouple::readAll(void) {
   //internalTemp = tc->read16thDegInternal();
-  temp = tc->readQtrDegCelsius();
-  err = tc->readError();
+  temp = max->readQtrDegCelsius();
+  err = max->readError();
 }
+
+void tcReadIsr(void) {
+  tc.readAll();
+  tcReadingCounter++;
+}
+
