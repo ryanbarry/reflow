@@ -65,12 +65,12 @@ typedef struct {
   const char *name;
   void (*action) (void);
 } btn;
-Adafruit_GFX_Button learnButton, bakeButton, reflowButton, setupButton;
+Adafruit_GFX_Button b1, b2, b3, b4;
 btn buttons[] = {
-  {&learnButton, "Top", topHeaterToggle},
-  {&bakeButton, "Bottom", botHeaterToggle},
-  {&reflowButton, "Boost", bstHeaterToggle},
-  {&setupButton, "Setup", doSetup}
+  {&b1, "Top", topHeaterToggle},
+  {&b2, "Bottom", botHeaterToggle},
+  {&b3, "Boost", bstHeaterToggle},
+  {&b4, "Setup", doSetup}
 };
 const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
 
