@@ -2,5 +2,6 @@
 #define _REFLOW_H
 
 void reflow(void);
+void drawReflowScreen(void);
 
 #endif

@@ -33,7 +33,7 @@ typedef struct {
 Adafruit_GFX_Button b1, b2, b3, b4;
 btn buttons[] = {
   {&b1, "Learn", learnCb},
-  {&b4, "Setup", doSetup}
+  {&b4, "Reflow", drawReflowScreen}
 };
 const uint8_t numButtons = sizeof(buttons)/sizeof(btn);
 
