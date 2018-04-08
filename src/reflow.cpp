@@ -12,43 +12,7 @@ typedef enum {
 } REFLOW_STATES;
 
 void reflowStatus(const char*);
-
-void drawReflowScreen(void) {
-  tft.fillRect(0, 28, 320, 240-28, ILI9341_WHITE); // clear everything below header
-  tft.fillRect(8, 216, 304, 2, ILI9341_GREEN);
-  tft.setTextSize(1);
-  tft.setCursor(10, 230);
-  tft.setFont(&HEADER_FONT);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.print("Waiting for temp 50C");
-  const int graphBottom=205, graphTop=31,
-    xTickSeparation=10, yTickSeparation=15,
-    graphWidth=280, graphHeight=175,
-    graphLeft=30, graphRight=graphLeft+graphWidth;
-  //TODO: do i need the "-1" after graphHeight/Width? (and "+1" on x-coord of right side Y-axis?)
-  tft.drawFastVLine(30, graphTop, graphHeight-1, ILI9341_BLACK); // left side Y-axis
-  tft.drawFastVLine(graphRight+1, graphTop, graphHeight-1, ILI9341_BLACK); // right side Y-axis
-  tft.drawFastHLine(30, graphTop, graphWidth-1, ILI9341_BLACK); // top X-axis
-  tft.drawFastHLine(30, graphBottom, graphWidth-1, ILI9341_BLACK); // bottom X-axis
-  tft.setFont();
-  tft.setTextSize(1);
-  for(int i=0; i < (graphHeight/yTickSeparation); i++) {
-    tft.drawFastHLine(25, graphBottom-(i*yTickSeparation), 7, ILI9341_BLACK); // y-axis tick marks
-    // draw labels next to every other tick mark
-    if (i%2 == 0) {
-      tft.setCursor(2, i);
-      tft.print(75+i*35);
-    }
-  }
-
-  for(int i=1; i < (graphWidth/xTickSeparation - 1); i++) {
-    tft.drawFastVLine(graphLeft+i*xTickSeparation, graphBottom, 3, ILI9341_BLACK);
-    if(i%3 == 0) {
-      tft.setCursor(graphLeft+(i-1)*xTickSeparation, graphBottom+3);
-      tft.print(i*10); // draw labels every 3rd tick
-    }
-  }
-}
+void drawReflowScreen(void);
 
 void reflow(void) {
 /*  // max deviation 20C
@@ -132,6 +96,47 @@ void reflow(void) {
 }
 
 void reflowStatus(const char *s) {
+  tft.setTextSize(1);
+  tft.setCursor(10, 229);
+  tft.setFont(&HEADER_FONT);
+  tft.setTextColor(ILI9341_BLACK);
+  tft.print(s);
+}
+
+void drawReflowScreen(void) {
+  tft.fillRect(0, 28, 320, 240-28, ILI9341_WHITE); // clear everything below header
+  tft.fillRect(8, 216, 304, 2, ILI9341_GREEN);
+  const int graphBottom=205, graphTop=31,
+    xTickSeparation=10, yTickSeparation=15,
+    graphWidth=280, graphHeight=175,
+    graphLeft=30, graphRight=graphLeft+graphWidth;
+  //TODO: do i need the "-1" after graphHeight/Width? (and "+1" on x-coord of right side Y-axis?)
+  tft.drawFastVLine(30, graphTop, graphHeight-1, ILI9341_BLACK); // left side Y-axis
+  tft.drawFastVLine(graphRight+1, graphTop, graphHeight-1, ILI9341_BLACK); // right side Y-axis
+  tft.drawFastHLine(30, graphTop, graphWidth-1, ILI9341_BLACK); // top X-axis
+  tft.drawFastHLine(30, graphBottom, graphWidth-1, ILI9341_BLACK); // bottom X-axis
   tft.setFont();
-  tft.setTextSize(2);
+  tft.setTextSize(1);
+  for(int i=0; i < (graphHeight/yTickSeparation+1); i++) {
+    tft.drawFastHLine(25, graphBottom-(i*yTickSeparation), 7, ILI9341_BLACK); // y-axis tick marks
+    // draw labels next to every other tick mark
+    if (i%2 == 0) {
+      if (i == 0) {
+        tft.setCursor(6+6, graphBottom-(i*yTickSeparation) - 3);
+      } else {
+        tft.setCursor(6, graphBottom-(i*yTickSeparation) - 3);
+      }
+      tft.print(75+i/2*35);
+    }
+  }
+
+  for(int i=1; i < (graphWidth/xTickSeparation - 1); i++) {
+    if(i%3 == 0) {
+      tft.drawFastVLine(graphLeft+i*xTickSeparation, graphBottom, 3, ILI9341_BLACK);
+      tft.setCursor(graphLeft+(i-1)*xTickSeparation+2, graphBottom+4);
+      tft.print(i*10); // draw labels every 3rd tick
+    } else {
+      tft.drawFastVLine(graphLeft+i*xTickSeparation, graphBottom, 2, ILI9341_BLACK);
+    }
+  }
 }
